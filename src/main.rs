@@ -1,6 +1,7 @@
 pub mod api;
-pub mod usecase;
 pub mod domain;
+pub mod infra;
+pub mod usecase;
 
 use actix_web::{App, HttpServer};
 

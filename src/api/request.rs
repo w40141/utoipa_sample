@@ -7,17 +7,7 @@ pub struct RegisteredUserRequest {
 }
 
 #[derive(Deserialize)]
-pub struct SearchedUserRequest {
-    pub id: u64,
-}
-
-#[derive(Deserialize)]
 pub struct PostTweetRequest {
-    pub user_id: u64,
+    pub name: String,
     pub content: String,
-}
-
-#[derive(Deserialize)]
-pub struct GetAllTweetRequest {
-    pub user_id: u64,
 }

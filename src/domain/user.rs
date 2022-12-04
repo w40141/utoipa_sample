@@ -1,6 +1,7 @@
 use chrono::{DateTime, Local};
 use ulid::Ulid;
 
+#[derive(Debug, Clone)]
 pub struct User {
     id: Ulid,
     name: String,
@@ -35,9 +36,9 @@ impl User {
     }
 }
 
-pub trait UserRepository<T> {
-    fn search_user_by(param: T) -> User;
-    fn register_user(name: String, email: String) -> User{
+pub trait UserRepository {
+    fn search_user_by(&self, name: String) -> Option<User>;
+    fn register_user(&self, name: String, email: String) -> User {
         User::new(name, email)
     }
 }

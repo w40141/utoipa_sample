@@ -1,18 +1,19 @@
 use chrono::{DateTime, Local};
 use ulid::Ulid;
 
+#[derive(Debug, Clone)]
 pub struct Tweet {
     id: Ulid,
-    user_id: Ulid,
+    user_name: String,
     content: String,
     created_at: DateTime<Local>,
 }
 
 impl Tweet {
-    pub fn new(user_id: Ulid, content: String) -> Self {
+    pub fn new(user_name: String, content: String) -> Self {
         Self {
             id: Ulid::new(),
-            user_id,
+            user_name,
             content,
             created_at: Local::now(),
         }
@@ -22,8 +23,8 @@ impl Tweet {
         &self.id
     }
 
-    pub fn user_id(&self) -> &Ulid {
-        &self.user_id
+    pub fn user_name(&self) -> &String {
+        &self.user_name
     }
 
     pub fn content(&self) -> &String {
@@ -47,6 +48,9 @@ impl Tweets {
     }
 }
 
-pub trait TweetRepository<T> {
-    fn get_all_tweet_by(param: T) -> Tweets;
+pub trait TweetRepository {
+    fn get_all_tweet_by(&self, name: String) -> Option<Tweets>;
+    fn post_tweet(&self, user_name: String, content: String) -> Tweet {
+        Tweet::new(user_name, content)
+    }
 }

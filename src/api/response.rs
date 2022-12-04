@@ -2,7 +2,10 @@ use chrono::{DateTime, Local};
 use serde::Serialize;
 use ulid::Ulid;
 
-use crate::domain::user::User;
+use crate::domain::{
+    tweet::{Tweet, Tweets},
+    user::User,
+};
 
 #[derive(Serialize)]
 pub struct RegisteredUserResponse {
@@ -14,10 +17,40 @@ pub struct RegisteredUserResponse {
 
 impl From<User> for RegisteredUserResponse {
     fn from(v: User) -> Self {
-        RegisteredUserResponse {
+        Self {
             id: v.id().to_owned(),
             name: v.name().to_owned(),
             email: v.email().to_owned(),
+            created_at: v.created_at().to_owned(),
+        }
+    }
+}
+
+#[derive(Serialize)]
+pub struct PostTweetResponse {
+    id: Ulid,
+    content: String,
+    user_name: String,
+    created_at: DateTime<Local>,
+}
+
+impl From<Tweet> for PostTweetResponse {
+    fn from(v: Tweet) -> Self {
+        Self {
+            id: v.id().to_owned(),
+            content: v.content().to_owned(),
+            user_name: v.user_name().to_owned(),
+            created_at: v.created_at().to_owned(),
+        }
+    }
+}
+
+impl From<&Tweet> for PostTweetResponse {
+    fn from(v: &Tweet) -> Self {
+        Self {
+            id: v.id().to_owned(),
+            content: v.content().to_owned(),
+            user_name: v.user_name().to_owned(),
             created_at: v.created_at().to_owned(),
         }
     }
@@ -30,36 +63,25 @@ pub struct SearchedUserResponse {
     created_at: DateTime<Local>,
 }
 
-#[derive(Serialize)]
-pub struct PostTweetResponse {
-    id: Ulid,
-    content: String,
-    user_id: u64,
-    user_name: String,
-    created_at: DateTime<Local>,
-}
-
-impl PostTweetResponse {
-    pub fn new(user: User, content: String) -> Self {
+impl From<User> for SearchedUserResponse {
+    fn from(v: User) -> Self {
         Self {
-            id: user,
-            content,
-            user_id,
-            user_name: todo!(),
-            created_at: todo!(),
+            name: v.name().to_owned(),
+            email: v.email().to_owned(),
+            created_at: v.created_at().to_owned(),
         }
     }
 }
 
 #[derive(Serialize)]
 pub struct GetAllTweetResponse {
-    user_id: Ulid,
-    tweet: Vec<Tweet>,
+    tweets: Vec<PostTweetResponse>,
 }
 
-#[derive(Serialize)]
-pub struct Tweet {
-    id: Ulid,
-    content: String,
-    created_at: DateTime<Local>,
+impl From<Tweets> for GetAllTweetResponse {
+    fn from(v: Tweets) -> Self {
+        Self {
+            tweets: v.list().iter().map(|t| PostTweetResponse::from(t)).collect(),
+        }
+    }
 }
