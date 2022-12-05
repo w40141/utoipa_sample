@@ -36,7 +36,7 @@ pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Respond
     Ok(web::Json(PostTweetResponse::from(tweet)))
 }
 
-#[get("/search_user/{name}")]
+#[get("/user/{name}")]
 pub async fn search_user(name: web::Path<String>) -> Result<impl Responder> {
     let handler = SearchUserHandle::new(Box::new(UserDB));
     let Ok(user) = handler.handle(name.to_string()) else { return Err(ErrorNotFound("NotFound"))};
