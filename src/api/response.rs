@@ -81,7 +81,7 @@ pub struct GetAllTweetResponse {
 impl From<Tweets> for GetAllTweetResponse {
     fn from(v: Tweets) -> Self {
         Self {
-            tweets: v.list().iter().map(|t| PostTweetResponse::from(t)).collect(),
+            tweets: v.list().iter().map(PostTweetResponse::from).collect(),
         }
     }
 }
