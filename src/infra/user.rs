@@ -1,4 +1,5 @@
-use crate::domain::user::{User, UserRepository};
+use crate::domain::user::User;
+use crate::domain::UserRepository;
 
 pub struct UserDB;
 

@@ -1,8 +1,9 @@
 use anyhow::{anyhow, Result};
 
-use crate::domain::user::{User, UserRepository};
+use crate::domain::user::User;
+use crate::domain::UserRepository;
 
-use super::SearchUser;
+use super::SearchUserUsecase;
 
 pub struct SearchUserHandle {
     handler: Box<dyn UserRepository>,
@@ -14,7 +15,7 @@ impl SearchUserHandle {
     }
 }
 
-impl SearchUser for SearchUserHandle {
+impl SearchUserUsecase for SearchUserHandle {
     fn handle(&self, user_name: String) -> Result<User> {
         let Some(u) = self.handler.search_user_by(user_name) else {return Err(anyhow!("User name is not found."))};
         Ok(u.clone())

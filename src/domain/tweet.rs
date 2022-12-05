@@ -47,10 +47,3 @@ impl Tweets {
         &self.0
     }
 }
-
-pub trait TweetRepository {
-    fn get_all_tweet_by(&self, name: String) -> Option<Tweets>;
-    fn post_tweet(&self, user_name: String, content: String) -> Tweet {
-        Tweet::new(user_name, content)
-    }
-}

@@ -1,4 +1,5 @@
-use crate::domain::tweet::{Tweet, TweetRepository, Tweets};
+use crate::domain::tweet::{Tweet, Tweets};
+use crate::domain::TweetRepository;
 
 pub struct TweetDB;
 

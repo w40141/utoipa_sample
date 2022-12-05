@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 #[derive(Deserialize)]
-pub struct RegisteredUserRequest {
+pub struct RegisterUserRequest {
     pub name: String,
     pub email: String,
 }

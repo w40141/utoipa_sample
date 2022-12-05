@@ -1,11 +1,9 @@
 use anyhow::{anyhow, Result};
 
-use crate::domain::{
-    tweet::{Tweet, TweetRepository},
-    user::UserRepository,
-};
+use crate::domain::tweet::Tweet;
+use crate::domain::{TweetRepository, UserRepository};
 
-use super::PostTweet;
+use super::PostTweetUsecase;
 
 pub struct PostTweetHandler {
     tweet_handler: Box<dyn TweetRepository>,
@@ -24,7 +22,7 @@ impl PostTweetHandler {
     }
 }
 
-impl PostTweet for PostTweetHandler {
+impl PostTweetUsecase for PostTweetHandler {
     fn handle(&self, user_name: String, content: String) -> Result<Tweet> {
         let Some(u) = self.user_handler.search_user_by(user_name) else {return Err(anyhow!("User name is not found."))};
         Ok(self.tweet_handler.post_tweet(u.name().to_owned(), content))

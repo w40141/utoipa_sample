@@ -35,10 +35,3 @@ impl User {
         &self.created_at
     }
 }
-
-pub trait UserRepository {
-    fn search_user_by(&self, name: String) -> Option<User>;
-    fn register_user(&self, name: String, email: String) -> User {
-        User::new(name, email)
-    }
-}
