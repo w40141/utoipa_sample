@@ -1,25 +1,33 @@
-use actix_web::error::{ErrorBadRequest, ErrorInternalServerError, ErrorNotFound};
+pub mod tweets;
+pub mod user;
+
+use actix_web::error::{ErrorBadRequest, ErrorInternalServerError};
 use actix_web::{get, post, web, HttpResponse, Responder, Result};
 
 use crate::api::composition::Composition;
-use crate::api::request::{NamePath, PostTweetRequest, RegisterUserRequest};
-use crate::api::response::{
-    GetAllTweetResponse, PostTweetResponse, RegisteredUserResponse, SearchedUserResponse,
-};
+use crate::api::request::{PostTweetRequest, RegisterUserRequest};
+use crate::api::response::{PostTweetResponse, RegisterUserResponse};
 
+#[utoipa::path(
+    get,
+    path = "/check_health",
+    responses(
+        (status = 200, description = "Check health", body = String)
+))]
 #[get("/check_health")]
 pub async fn check_health() -> impl Responder {
     HttpResponse::Ok().body("Running service")
 }
 
-#[post("/register")]
-pub async fn register_user(req: web::Json<RegisterUserRequest>) -> Result<impl Responder> {
-    let name = req.name.to_string();
-    let email = req.email.to_string();
-    let Ok(user) = Composition::register_user().run(name, email).await else {return Err(ErrorInternalServerError("InternalError"))};
-    Ok(web::Json(RegisteredUserResponse::from(user)))
-}
-
+#[utoipa::path(
+    post,
+    // path = "/post",
+    request_body = PostTweetRequest,
+    responses(
+        (status = 200, description = "Post Tweet", body = PostTweetResponse),
+        (status = 400, description = "Bad request")
+    ),
+)]
 #[post("/post")]
 pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Responder> {
     let PostTweetRequest { name, content } = req.0;
@@ -27,16 +35,18 @@ pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Respond
     Ok(web::Json(PostTweetResponse::from(tweet)))
 }
 
-#[get("/user/{name}")]
-pub async fn search_user(req: web::Path<NamePath>) -> Result<impl Responder> {
+#[utoipa::path(
+    post,
+    request_body = RegisterUserRequest,
+    responses(
+        (status = 200, description = "Register User", body = RegisterUserRequest),
+        (status = 500, description = "Internal error")
+    ),
+)]
+#[post("/register")]
+pub async fn register_user(req: web::Json<RegisterUserRequest>) -> Result<impl Responder> {
     let name = req.name.to_string();
-    let Ok(user) = Composition::search_user().run(name).await else { return Err(ErrorNotFound("NotFound"))};
-    Ok(web::Json(SearchedUserResponse::from(user)))
-}
-
-#[get("/tweets/{name}")]
-pub async fn get_all_tweets(req: web::Path<NamePath>) -> Result<impl Responder> {
-    let name = req.name.to_string();
-    let Ok(tweets) = Composition::get_all_tweets().run(name).await else {return Err(ErrorNotFound("NotFound"))};
-    Ok(web::Json(GetAllTweetResponse::from(tweets)))
+    let email = req.email.to_string();
+    let Ok(user) = Composition::register_user().run(name, email).await else {return Err(ErrorInternalServerError("InternalError"))};
+    Ok(web::Json(RegisterUserResponse::from(user)))
 }

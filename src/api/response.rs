@@ -1,7 +1,7 @@
 use chrono::{DateTime, Local};
 use serde::Serialize;
 use ulid::Ulid;
-use utoipa::{ToSchema, IntoParams};
+use utoipa::ToSchema;
 
 use crate::domain::{
     tweet::{Tweet, Tweets},
@@ -9,14 +9,14 @@ use crate::domain::{
 };
 
 #[derive(Serialize, ToSchema)]
-pub struct RegisteredUserResponse {
+pub struct RegisterUserResponse {
     id: Ulid,
     name: String,
     email: String,
     created_at: DateTime<Local>,
 }
 
-impl From<User> for RegisteredUserResponse {
+impl From<User> for RegisterUserResponse {
     fn from(v: User) -> Self {
         Self {
             id: v.id().to_owned(),

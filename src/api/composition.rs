@@ -9,6 +9,7 @@ use super::execute::{
     GetAllTweetsExecute, PostTweetExecute, RegisterUserExecute, SearchUserEcecute,
 };
 
+/// 依存性注入
 pub struct Composition;
 
 impl Composition {

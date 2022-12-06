@@ -1,9 +1,9 @@
 use serde::Deserialize;
-use utoipa::{ToSchema, IntoParams};
+use utoipa::{IntoParams, ToSchema};
 
 #[derive(Deserialize, IntoParams)]
 pub struct NamePath {
-    pub name: String
+    pub name: String,
 }
 
 #[derive(Deserialize, ToSchema)]
