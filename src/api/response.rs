@@ -1,13 +1,14 @@
 use chrono::{DateTime, Local};
 use serde::Serialize;
 use ulid::Ulid;
+use utoipa::{ToSchema, IntoParams};
 
 use crate::domain::{
     tweet::{Tweet, Tweets},
     user::User,
 };
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct RegisteredUserResponse {
     id: Ulid,
     name: String,
@@ -26,7 +27,7 @@ impl From<User> for RegisteredUserResponse {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct PostTweetResponse {
     id: Ulid,
     content: String,
@@ -56,7 +57,7 @@ impl From<&Tweet> for PostTweetResponse {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct SearchedUserResponse {
     name: String,
     email: String,
@@ -73,7 +74,7 @@ impl From<User> for SearchedUserResponse {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct GetAllTweetResponse {
     tweets: Vec<PostTweetResponse>,
 }

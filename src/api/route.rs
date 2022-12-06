@@ -2,7 +2,7 @@ use actix_web::error::{ErrorBadRequest, ErrorInternalServerError, ErrorNotFound}
 use actix_web::{get, post, web, HttpResponse, Responder, Result};
 
 use crate::api::composition::Composition;
-use crate::api::request::{PostTweetRequest, RegisterUserRequest};
+use crate::api::request::{NamePath, PostTweetRequest, RegisterUserRequest};
 use crate::api::response::{
     GetAllTweetResponse, PostTweetResponse, RegisteredUserResponse, SearchedUserResponse,
 };
@@ -28,13 +28,15 @@ pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Respond
 }
 
 #[get("/user/{name}")]
-pub async fn search_user(name: web::Path<String>) -> Result<impl Responder> {
-    let Ok(user) = Composition::search_user().run(name.to_string()).await else { return Err(ErrorNotFound("NotFound"))};
+pub async fn search_user(req: web::Path<NamePath>) -> Result<impl Responder> {
+    let name = req.name.to_string();
+    let Ok(user) = Composition::search_user().run(name).await else { return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(SearchedUserResponse::from(user)))
 }
 
 #[get("/tweets/{name}")]
-pub async fn get_all_tweets(name: web::Path<String>) -> Result<impl Responder> {
-    let Ok(tweets) = Composition::get_all_tweets().run(name.to_string()).await else {return Err(ErrorNotFound("NotFound"))};
+pub async fn get_all_tweets(req: web::Path<NamePath>) -> Result<impl Responder> {
+    let name = req.name.to_string();
+    let Ok(tweets) = Composition::get_all_tweets().run(name).await else {return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(GetAllTweetResponse::from(tweets)))
 }

@@ -11,3 +11,5 @@ anyhow = "1.0.66"
 chrono = { version = "0.4.23", features = ["serde"] }
 serde = { version = "1.0.148", features = ["serde_derive", "derive"] }
 ulid = { version = "1.0.0", features = ["serde"] }
+utoipa = { version = "2.4.2", features = ["actix_extras", "chrono", "serde_yaml"] }
+utoipa-swagger-ui = { version = "3.0.1", features = ["actix-web"] }
