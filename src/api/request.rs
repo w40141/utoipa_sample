@@ -2,11 +2,12 @@ use serde::Deserialize;
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Deserialize, IntoParams)]
-pub struct NamePath {
+pub struct Name {
+    /// User name
     name: String,
 }
 
-impl NamePath {
+impl Name {
     pub fn name(&self) -> &str {
         &self.name
     }

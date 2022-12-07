@@ -7,14 +7,20 @@ actix-web + utoipaで簡単なバックエンドを構築し、APIをjsonで確�
 ### ディレクトリ構造
 ```
 ./src
-├── api		// urlのパス等を実装している
+├── api
+│   ├── composition.rs	// 依存性注入
+│   ├── execute.rs		// usecase層を使た実装
+│   ├── request.rs		// リクエスト用のモデル
+│   ├── response.rs		// レスポインス用のモデル
+│   ├── route		// executeとcompositionを使ったAPI（パス）の実装
+│   └── route.rs		// OpanAPIの設定とactix-webの設定
 ├── api.rs
-├── domain		// ドメイン情報を実装している
+├── domaim			// ドメインの実装
 ├── domain.rs
-├── infra		// DB(モック)を実装している
+├── infra			// DBモックの実装
 ├── infra.rs
-├── main.rs		// サーバーを実装している
-├── usecase		// ユースケースを実装している
+├── main.rs			// サーバーの実装
+├── usecase			// 各ユースケースの実装
 └── usecase.rs
 ```
 

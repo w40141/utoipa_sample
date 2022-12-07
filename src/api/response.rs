@@ -1,6 +1,5 @@
 use chrono::{DateTime, Local};
 use serde::Serialize;
-use ulid::Ulid;
 use utoipa::ToSchema;
 
 use crate::domain::{
@@ -10,7 +9,7 @@ use crate::domain::{
 
 #[derive(Serialize, ToSchema)]
 pub struct RegisterUserResponse {
-    id: Ulid,
+    id: String,
     name: String,
     email: String,
     created_at: DateTime<Local>,
@@ -19,17 +18,17 @@ pub struct RegisterUserResponse {
 impl From<User> for RegisterUserResponse {
     fn from(v: User) -> Self {
         Self {
-            id: v.id().to_owned(),
-            name: v.name().to_owned(),
-            email: v.email().to_owned(),
-            created_at: v.created_at().to_owned(),
+            id: v.id().to_string(),
+            name: v.name().to_string(),
+            email: v.email().to_string(),
+            created_at: *v.created_at(),
         }
     }
 }
 
 #[derive(Serialize, ToSchema)]
 pub struct PostTweetResponse {
-    id: Ulid,
+    id: String,
     content: String,
     user_name: String,
     created_at: DateTime<Local>,
@@ -38,22 +37,17 @@ pub struct PostTweetResponse {
 impl From<Tweet> for PostTweetResponse {
     fn from(v: Tweet) -> Self {
         Self {
-            id: v.id().to_owned(),
-            content: v.content().to_owned(),
-            user_name: v.user_name().to_owned(),
-            created_at: v.created_at().to_owned(),
+            id: v.id().to_string(),
+            content: v.content().to_string(),
+            user_name: v.user_name().to_string(),
+            created_at: *v.created_at(),
         }
     }
 }
 
 impl From<&Tweet> for PostTweetResponse {
     fn from(v: &Tweet) -> Self {
-        Self {
-            id: v.id().to_owned(),
-            content: v.content().to_owned(),
-            user_name: v.user_name().to_owned(),
-            created_at: v.created_at().to_owned(),
-        }
+        Self::from(v.clone())
     }
 }
 
