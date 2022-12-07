@@ -3,17 +3,43 @@ use utoipa::{IntoParams, ToSchema};
 
 #[derive(Deserialize, IntoParams)]
 pub struct NamePath {
-    pub name: String,
+    name: String,
+}
+
+impl NamePath {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[derive(Deserialize, ToSchema)]
 pub struct RegisterUserRequest {
-    pub name: String,
-    pub email: String,
+    name: String,
+    email: String,
+}
+
+impl RegisterUserRequest {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn email(&self) -> &str{
+        &self.email
+    }
 }
 
 #[derive(Deserialize, ToSchema)]
 pub struct PostTweetRequest {
-    pub name: String,
-    pub content: String,
+    name: String,
+    content: String,
+}
+
+impl PostTweetRequest {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn content(&self) -> &str{
+        &self.content
+    }
 }

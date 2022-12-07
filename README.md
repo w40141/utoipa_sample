@@ -34,14 +34,14 @@ cargo run
 $ curl localhost:8080/check_health
 Running service
 
-$ curl -X GET localhost:8080/user/taroa
+$ curl -X GET localhost:8080/user/taroa | jq .
 {
 	"name":"taro",
 	"email":"taro@example.com",
 	"created_at":"2022-12-05T20:49:43.979828+09:00"
 }
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"name": "daisuke", "email": "daisuke@example"}' localhost:8080/register
+$ curl -X POST -H "Content-Type: application/json" -d '{"name": "daisuke", "email": "daisuke@example"}' localhost:8080/register | jq .
 {
 	"id":"01GKH225CRPYPWK8RGZG8YJPGD",
 	"name":"daisuke",
@@ -49,27 +49,31 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"name": "daisuke", "emai
 	"created_at":"2022-12-05T20:52:09.880301+09:00"
 }
 
-$ curl -X GET localhost:8080/tweets/taro
-{"tweets":[
-	{
-		"id":"01GKH20J1HA55P9J9GEFT7KEFB",
-		"content":"おはよう",
-		"user_name":"taro",
-		"created_at":"2022-12-05T20:51:17.298061+09:00"
-	},
-	{
-		"id":"01GKH20J1JWKJC7DABPZXCJQ3Y",
-		"content":"おやすみ",
-		"user_name":"taro",
-		"created_at":"2022-12-05T20:51:17.298228+09:00"
-	},
-	{
-		"id":"01GKH20J1JJY2JT4R3Q7FRZZEB",
-		"content":"きょうもげんき",
-		"user_name":"taro",
-		"created_at":"2022-12-05T20:51:17.298230+09:00"
-	}
-]}
+$ curl -X GET localhost:8080/tweets/taro | jq .
+{
+	"tweets":[
+		{
+			"id":"01GKH20J1HA55P9J9GEFT7KEFB",
+			"content":"おはよう",
+			"user_name":"taro",
+			"created_at":"2022-12-05T20:51:17.298061+09:00"
+		},
+		{
+			"id":"01GKH20J1JWKJC7DABPZXCJQ3Y",
+			"content":"おやすみ",
+			"user_name":"taro",
+			"created_at":"2022-12-05T20:51:17.298228+09:00"
+		},
+		{
+			"id":"01GKH20J1JJY2JT4R3Q7FRZZEB",
+			"content":"きょうもげんき",
+			"user_name":"taro",
+			"created_at":"2022-12-05T20:51:17.298230+09:00"
+		}
+	]
+}
 ```
 
 ### APIの確認方法
+
+起動後に`http://localhost:8080/swagger-ui/`へアクセスする。

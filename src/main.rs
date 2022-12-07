@@ -5,7 +5,7 @@ pub mod usecase;
 
 use actix_web::{App, HttpServer};
 
-use crate::api::openapi::config;
+use crate::api::route::config;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

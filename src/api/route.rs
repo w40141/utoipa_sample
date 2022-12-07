@@ -1,54 +1,44 @@
-pub mod tweets;
-pub mod user;
+mod check_health;
+mod post_tweet;
+mod register_user;
+mod tweets;
+mod user;
 
-use actix_web::error::{ErrorBadRequest, ErrorInternalServerError};
-use actix_web::{get, post, web, HttpResponse, Responder, Result};
+use actix_web::web;
+use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
 
-use crate::api::composition::Composition;
-use crate::api::request::{PostTweetRequest, RegisterUserRequest};
-use crate::api::response::{PostTweetResponse, RegisterUserResponse};
+use crate::api::route;
+use crate::api::request::*;
+use crate::api::response::*;
 
-#[utoipa::path(
-    get,
-    path = "/check_health",
-    responses(
-        (status = 200, description = "Check health", body = String)
-))]
-#[get("/check_health")]
-pub async fn check_health() -> impl Responder {
-    HttpResponse::Ok().body("Running service")
-}
-
-#[utoipa::path(
-    post,
-    // path = "/post",
-    request_body = PostTweetRequest,
-    responses(
-        (status = 200, description = "Post Tweet", body = PostTweetResponse),
-        (status = 400, description = "Bad request")
+#[derive(OpenApi)]
+#[openapi(
+    paths(
+        route::check_health::check_health,
+        route::register_user::register_user,
+        route::post_tweet::post_tweet,
+        route::user::search_user::search_user,
+        route::tweets::get_all_tweets::get_all_tweets,
     ),
+    components(schemas(
+        RegisterUserRequest,
+        PostTweetRequest,
+        RegisterUserResponse,
+        PostTweetResponse,
+        SearchedUserResponse,
+        GetAllTweetResponse
+    ))
 )]
-#[post("/post")]
-pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Responder> {
-    let PostTweetRequest { name, content } = req.0;
-    let Ok(tweet) = Composition::post_tweet().run(&name, &content).await
-        else {return Err(ErrorBadRequest("BadRequest"))};
-    Ok(web::Json(PostTweetResponse::from(tweet)))
-}
+struct ApiDoc;
 
-#[utoipa::path(
-    post,
-    request_body = RegisterUserRequest,
-    responses(
-        (status = 200, description = "Register User", body = RegisterUserRequest),
-        (status = 500, description = "Internal error")
-    ),
-)]
-#[post("/register")]
-pub async fn register_user(req: web::Json<RegisterUserRequest>) -> Result<impl Responder> {
-    let name = req.name.to_string();
-    let email = req.email.to_string();
-    let Ok(user) = Composition::register_user().run(&name, &email).await
-        else {return Err(ErrorInternalServerError("InternalError"))};
-    Ok(web::Json(RegisterUserResponse::from(user)))
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(check_health::check_health)
+        .service(register_user::register_user)
+        .service(post_tweet::post_tweet)
+        .configure(user::config)
+        .configure(tweets::config)
+        .service(
+            SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-doc/opanapi.json", ApiDoc::openapi()),
+        );
 }
