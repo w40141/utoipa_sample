@@ -17,7 +17,8 @@ impl SearchUserHandle {
 
 impl SearchUserUsecase for SearchUserHandle {
     fn handle(&self, user_name: String) -> Result<User> {
-        let Some(u) = self.handler.search_user_by(user_name) else {return Err(anyhow!("User name is not found."))};
+        let Some(u) = self.handler.search_user_by(user_name)
+            else {return Err(anyhow!("User name is not found."))};
         Ok(u)
     }
 }

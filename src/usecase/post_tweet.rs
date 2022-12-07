@@ -24,7 +24,8 @@ impl PostTweetHandler {
 
 impl PostTweetUsecase for PostTweetHandler {
     fn handle(&self, user_name: String, content: String) -> Result<Tweet> {
-        let Some(u) = self.user_handler.search_user_by(user_name) else {return Err(anyhow!("User name is not found."))};
+        let Some(u) = self.user_handler.search_user_by(user_name)
+            else {return Err(anyhow!("User name is not found."))};
         Ok(self.tweet_handler.post_tweet(u.name().to_owned(), content))
     }
 }

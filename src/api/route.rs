@@ -31,7 +31,8 @@ pub async fn check_health() -> impl Responder {
 #[post("/post")]
 pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Responder> {
     let PostTweetRequest { name, content } = req.0;
-    let Ok(tweet) = Composition::post_tweet().run(name, content).await else {return Err(ErrorBadRequest("BadRequest"))};
+    let Ok(tweet) = Composition::post_tweet().run(name, content).await
+        else {return Err(ErrorBadRequest("BadRequest"))};
     Ok(web::Json(PostTweetResponse::from(tweet)))
 }
 
@@ -47,6 +48,7 @@ pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Respond
 pub async fn register_user(req: web::Json<RegisterUserRequest>) -> Result<impl Responder> {
     let name = req.name.to_string();
     let email = req.email.to_string();
-    let Ok(user) = Composition::register_user().run(name, email).await else {return Err(ErrorInternalServerError("InternalError"))};
+    let Ok(user) = Composition::register_user().run(name, email).await
+        else {return Err(ErrorInternalServerError("InternalError"))};
     Ok(web::Json(RegisterUserResponse::from(user)))
 }
