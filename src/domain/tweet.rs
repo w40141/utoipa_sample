@@ -10,11 +10,11 @@ pub struct Tweet {
 }
 
 impl Tweet {
-    pub fn new(user_name: String, content: String) -> Self {
+    pub fn new(user_name: impl Into<String>, content: impl Into<String>) -> Self {
         Self {
             id: Ulid::new(),
-            user_name,
-            content,
+            user_name: user_name.into(),
+            content: content.into(),
             created_at: Local::now(),
         }
     }

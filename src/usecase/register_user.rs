@@ -14,7 +14,7 @@ impl RegisterUserHandler {
 }
 
 impl RegisterUserUsecase for RegisterUserHandler {
-    fn handle(&self, name: String, email: String) -> User {
+    fn handle(&self, name: &str, email: &str) -> User {
         self.handler.register_user(name, email)
     }
 }

@@ -15,7 +15,7 @@ impl RegisterUserExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: String, email: String) -> Result<User> {
+    pub async fn run(&self, name: &str, email: &str) -> Result<User> {
         Ok(self.usecase.handle(name, email))
     }
 }
@@ -29,7 +29,7 @@ impl PostTweetExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, user_name: String, content: String) -> Result<Tweet> {
+    pub async fn run(&self, user_name: &str, content: &str) -> Result<Tweet> {
         self.usecase.handle(user_name, content)
     }
 }
@@ -43,7 +43,7 @@ impl SearchUserEcecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: String) -> Result<User> {
+    pub async fn run(&self, name: &str) -> Result<User> {
         self.usecase.handle(name)
     }
 }
@@ -57,7 +57,7 @@ impl GetAllTweetsExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: String) -> Result<Tweets> {
+    pub async fn run(&self, name: &str) -> Result<Tweets> {
         self.usecase.handle(name)
     }
 }

@@ -16,7 +16,7 @@ impl GetAllTweetsHandler {
 }
 
 impl GetAllTweetsUsecase for GetAllTweetsHandler {
-    fn handle(&self, user_name: String) -> Result<Tweets> {
+    fn handle(&self, user_name: &str) -> Result<Tweets> {
         let Some(t) = self.handler.get_all_tweet_by(user_name)
             else {return Err(anyhow!("User name is not found."))};
         Ok(t)

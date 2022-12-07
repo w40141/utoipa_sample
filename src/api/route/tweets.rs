@@ -16,7 +16,7 @@ use crate::api::response::GetAllTweetResponse;
 #[get("/{name}")]
 pub async fn get_all_tweets(req: web::Path<NamePath>) -> Result<impl Responder> {
     let name = req.name.to_string();
-    let Ok(tweets) = Composition::get_all_tweets().run(name).await
+    let Ok(tweets) = Composition::get_all_tweets().run(&name).await
         else {return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(GetAllTweetResponse::from(tweets)))
 }

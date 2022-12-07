@@ -10,11 +10,11 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(name: String, email: String) -> Self {
+    pub fn new(name: impl Into<String>, email: impl Into<String>) -> Self {
         Self {
             id: Ulid::new(),
-            name,
-            email,
+            name: name.into(),
+            email: email.into(),
             created_at: Local::now(),
         }
     }

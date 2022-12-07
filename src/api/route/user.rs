@@ -17,7 +17,7 @@ use crate::api::response::SearchedUserResponse;
 #[get("/{name}")]
 pub async fn search_user(req: web::Path<NamePath>) -> Result<impl Responder> {
     let name = req.name.to_string();
-    let Ok(user) = Composition::search_user().run(name).await
+    let Ok(user) = Composition::search_user().run(&name).await
         else { return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(SearchedUserResponse::from(user)))
 }

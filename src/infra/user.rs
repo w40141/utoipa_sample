@@ -1,17 +1,18 @@
+use std::collections::HashMap;
+
 use crate::domain::user::User;
 use crate::domain::UserRepository;
 
 pub struct UserDB;
 
 impl UserRepository for UserDB {
-    fn search_user_by(&self, name: String) -> Option<User> {
-        let users = [
-            User::new("taro".to_string(), "taro@example.com".to_string()),
-            User::new("hanako".to_string(), "hanako@example.com".to_string()),
-            User::new("jioo".to_string(), "jiro@example.com".to_string()),
-            User::new("satomi".to_string(), "satomi@example.com".to_string()),
-        ];
-        let Some(u) = users.iter().find(|u| u.name().eq(&name)) else {return None};
-        Some(u.clone())
+    fn search_user_by(&self, name: &str) -> Option<User> {
+        let mut users = HashMap::new();
+        users.insert("taro", "taro@example.com");
+        users.insert("hanako", "hanako@example.com");
+        users.insert("jioo", "jiro@example.com");
+        users.insert("satomi", "satomi@example.com");
+        let Some(&email) = users.get(name) else {return None};
+        Some(User::new(name, email))
     }
 }

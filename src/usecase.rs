@@ -11,17 +11,17 @@ pub mod register_user;
 pub mod search_user;
 
 pub trait RegisterUserUsecase {
-    fn handle(&self, name: String, email: String) -> User;
+    fn handle(&self, name: &str, email: &str) -> User;
 }
 
 pub trait PostTweetUsecase {
-    fn handle(&self, user_name: String, content: String) -> Result<Tweet>;
+    fn handle(&self, user_name: &str, content: &str) -> Result<Tweet>;
 }
 
 pub trait SearchUserUsecase {
-    fn handle(&self, name: String) -> Result<User>;
+    fn handle(&self, name: &str) -> Result<User>;
 }
 
 pub trait GetAllTweetsUsecase {
-    fn handle(&self, name: String) -> Result<Tweets>;
+    fn handle(&self, name: &str) -> Result<Tweets>;
 }
