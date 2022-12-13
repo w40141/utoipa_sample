@@ -18,7 +18,7 @@ pub async fn post_tweet(
     data: web::Data<Composition>,
     req: web::Json<PostTweetRequest>,
 ) -> Result<impl Responder> {
-    let Ok(response) = PostTweetExecute::new(data.post_tweet()).run(req.0).await
+    let Ok(response) = PostTweetExecute::run(data.post_tweet(), req.0).await
         else {return Err(ErrorBadRequest("BadRequest"))};
     Ok(web::Json(response))
 }

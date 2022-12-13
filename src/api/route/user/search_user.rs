@@ -5,7 +5,6 @@ use crate::api::composition::Composition;
 use crate::api::execute::SearchUserEcecute;
 use crate::api::request::Name;
 
-
 #[utoipa::path(
     get,
     context_path = "/user",
@@ -20,7 +19,7 @@ pub async fn search_user(
     data: web::Data<Composition>,
     req: web::Path<Name>,
 ) -> Result<impl Responder> {
-    let Ok(user) = SearchUserEcecute::new(data.search_user()).run(req.name()).await
+    let Ok(user) = SearchUserEcecute::run(data.search_user(), req.name()).await
         else { return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(user))
 }

@@ -9,62 +9,50 @@ use super::response::{
     GetAllTweetResponse, PostTweetResponse, RegisterUserResponse, SearchedUserResponse,
 };
 
-pub struct RegisterUserExecute {
-    usecase: Box<dyn RegisterUserUsecase>,
-}
+pub struct RegisterUserExecute;
 
 impl RegisterUserExecute {
-    pub fn new(usecase: Box<dyn RegisterUserUsecase>) -> Self {
-        Self { usecase }
-    }
-
-    pub async fn run(&self, req: RegisterUserRequest) -> Result<RegisterUserResponse> {
-        let u = self.usecase.handle(req.name(), req.email());
+    pub async fn run(
+        usecase: Box<dyn RegisterUserUsecase>,
+        req: RegisterUserRequest,
+    ) -> Result<RegisterUserResponse> {
+        let u = usecase.handle(req.name(), req.email());
         Ok(RegisterUserResponse::from(u))
     }
 }
 
-pub struct PostTweetExecute {
-    usecase: Box<dyn PostTweetUsecase>,
-}
+pub struct PostTweetExecute;
 
 impl PostTweetExecute {
-    pub fn new(usecase: Box<dyn PostTweetUsecase>) -> Self {
-        Self { usecase }
-    }
-
-    pub async fn run(&self, req: PostTweetRequest) -> Result<PostTweetResponse> {
-        let u = self.usecase.handle(req.name(), req.content())?;
+    pub async fn run(
+        usecase: Box<dyn PostTweetUsecase>,
+        req: PostTweetRequest,
+    ) -> Result<PostTweetResponse> {
+        let u = usecase.handle(req.name(), req.content())?;
         Ok(PostTweetResponse::from(u))
     }
 }
 
-pub struct SearchUserEcecute {
-    usecase: Box<dyn SearchUserUsecase>,
-}
+pub struct SearchUserEcecute;
 
 impl SearchUserEcecute {
-    pub fn new(usecase: Box<dyn SearchUserUsecase>) -> Self {
-        Self { usecase }
-    }
-
-    pub async fn run(&self, req: &str) -> Result<SearchedUserResponse> {
-        let u = self.usecase.handle(req)?;
+    pub async fn run(
+        usecase: Box<dyn SearchUserUsecase>,
+        req: &str,
+    ) -> Result<SearchedUserResponse> {
+        let u = usecase.handle(req)?;
         Ok(SearchedUserResponse::from(u))
     }
 }
 
-pub struct GetAllTweetsExecute {
-    usecase: Box<dyn GetAllTweetsUsecase>,
-}
+pub struct GetAllTweetsExecute;
 
 impl GetAllTweetsExecute {
-    pub fn new(usecase: Box<dyn GetAllTweetsUsecase>) -> Self {
-        Self { usecase }
-    }
-
-    pub async fn run(&self, req: &str) -> Result<GetAllTweetResponse> {
-        let u = self.usecase.handle(req)?;
+    pub async fn run(
+        usecase: Box<dyn GetAllTweetsUsecase>,
+        req: &str,
+    ) -> Result<GetAllTweetResponse> {
+        let u = usecase.handle(req)?;
         Ok(GetAllTweetResponse::from(u))
     }
 }
