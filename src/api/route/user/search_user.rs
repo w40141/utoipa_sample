@@ -4,7 +4,7 @@ use actix_web::{get, web, Responder, Result};
 use crate::api::composition::Composition;
 use crate::api::execute::SearchUserEcecute;
 use crate::api::request::Name;
-use crate::api::response::SearchedUserResponse;
+
 
 #[utoipa::path(
     get,
@@ -22,5 +22,5 @@ pub async fn search_user(
 ) -> Result<impl Responder> {
     let Ok(user) = SearchUserEcecute::new(data.search_user()).run(req.name()).await
         else { return Err(ErrorNotFound("NotFound"))};
-    Ok(web::Json(SearchedUserResponse::from(user)))
+    Ok(web::Json(user))
 }

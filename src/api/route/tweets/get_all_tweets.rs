@@ -4,7 +4,7 @@ use actix_web::{get, web, Responder, Result};
 use crate::api::composition::Composition;
 use crate::api::execute::GetAllTweetsExecute;
 use crate::api::request::Name;
-use crate::api::response::GetAllTweetResponse;
+
 
 #[utoipa::path(
     get,
@@ -22,5 +22,5 @@ pub async fn get_all_tweets(
 ) -> Result<impl Responder> {
     let Ok(tweets) = GetAllTweetsExecute::new(data.get_all_tweets()).run(req.name()).await
         else {return Err(ErrorNotFound("NotFound"))};
-    Ok(web::Json(GetAllTweetResponse::from(tweets)))
+    Ok(web::Json(tweets))
 }

@@ -8,9 +8,9 @@ use actix_web::web;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::api::route;
 use crate::api::request::*;
 use crate::api::response::*;
+use crate::api::route;
 
 #[derive(OpenApi)]
 #[openapi(
