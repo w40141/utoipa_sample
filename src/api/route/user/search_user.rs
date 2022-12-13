@@ -2,6 +2,7 @@ use actix_web::error::ErrorNotFound;
 use actix_web::{get, web, Responder, Result};
 
 use crate::api::composition::Composition;
+use crate::api::execute::SearchUserEcecute;
 use crate::api::request::Name;
 use crate::api::response::SearchedUserResponse;
 
@@ -15,9 +16,11 @@ use crate::api::response::SearchedUserResponse;
     ),
 )]
 #[get("/{name}")]
-pub async fn search_user(req: web::Path<Name>) -> Result<impl Responder> {
-    let name = req.name();
-    let Ok(user) = Composition::search_user().run(name).await
+pub async fn search_user(
+    data: web::Data<Composition>,
+    req: web::Path<Name>,
+) -> Result<impl Responder> {
+    let Ok(user) = SearchUserEcecute::new(data.search_user()).run(req.name()).await
         else { return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(SearchedUserResponse::from(user)))
 }

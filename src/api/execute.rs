@@ -1,9 +1,12 @@
 use anyhow::Result;
 
-use crate::domain::tweet::{Tweet, Tweets};
-use crate::domain::user::User;
 use crate::usecase::{
     GetAllTweetsUsecase, PostTweetUsecase, RegisterUserUsecase, SearchUserUsecase,
+};
+
+use super::request::{PostTweetRequest, RegisterUserRequest};
+use super::response::{
+    GetAllTweetResponse, PostTweetResponse, RegisterUserResponse, SearchedUserResponse,
 };
 
 pub struct RegisterUserExecute {
@@ -15,8 +18,9 @@ impl RegisterUserExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: &str, email: &str) -> Result<User> {
-        Ok(self.usecase.handle(name, email))
+    pub async fn run(&self, req: RegisterUserRequest) -> Result<RegisterUserResponse> {
+        let u = self.usecase.handle(req.name(), req.email());
+        Ok(RegisterUserResponse::from(u))
     }
 }
 
@@ -29,8 +33,9 @@ impl PostTweetExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, user_name: &str, content: &str) -> Result<Tweet> {
-        self.usecase.handle(user_name, content)
+    pub async fn run(&self, req: PostTweetRequest) -> Result<PostTweetResponse> {
+        let u = self.usecase.handle(req.name(), req.content())?;
+        Ok(PostTweetResponse::from(u))
     }
 }
 
@@ -43,8 +48,9 @@ impl SearchUserEcecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: &str) -> Result<User> {
-        self.usecase.handle(name)
+    pub async fn run(&self, req: &str) -> Result<SearchedUserResponse> {
+        let u = self.usecase.handle(req)?;
+        Ok(SearchedUserResponse::from(u))
     }
 }
 
@@ -57,7 +63,8 @@ impl GetAllTweetsExecute {
         Self { usecase }
     }
 
-    pub async fn run(&self, name: &str) -> Result<Tweets> {
-        self.usecase.handle(name)
+    pub async fn run(&self, req: &str) -> Result<GetAllTweetResponse> {
+        let u = self.usecase.handle(req)?;
+        Ok(GetAllTweetResponse::from(u))
     }
 }

@@ -2,8 +2,8 @@ use actix_web::error::ErrorBadRequest;
 use actix_web::{post, web, Responder, Result};
 
 use crate::api::composition::Composition;
+use crate::api::execute::PostTweetExecute;
 use crate::api::request::PostTweetRequest;
-use crate::api::response::PostTweetResponse;
 
 #[utoipa::path(
     post,
@@ -14,10 +14,11 @@ use crate::api::response::PostTweetResponse;
     ),
 )]
 #[post("/post")]
-pub async fn post_tweet(req: web::Json<PostTweetRequest>) -> Result<impl Responder> {
-    let name = req.0.name();
-    let content = req.0.content();
-    let Ok(tweet) = Composition::post_tweet().run(name, content).await
+pub async fn post_tweet(
+    data: web::Data<Composition>,
+    req: web::Json<PostTweetRequest>,
+) -> Result<impl Responder> {
+    let Ok(response) = PostTweetExecute::new(data.post_tweet()).run(req.0).await
         else {return Err(ErrorBadRequest("BadRequest"))};
-    Ok(web::Json(PostTweetResponse::from(tweet)))
+    Ok(web::Json(response))
 }

@@ -2,8 +2,8 @@ use actix_web::error::ErrorInternalServerError;
 use actix_web::{post, web, Responder, Result};
 
 use crate::api::composition::Composition;
+use crate::api::execute::RegisterUserExecute;
 use crate::api::request::RegisterUserRequest;
-use crate::api::response::RegisterUserResponse;
 
 #[utoipa::path(
     post,
@@ -14,10 +14,11 @@ use crate::api::response::RegisterUserResponse;
     ),
 )]
 #[post("/register")]
-pub async fn register_user(req: web::Json<RegisterUserRequest>) -> Result<impl Responder> {
-    let name = req.0.name();
-    let email = req.0.email();
-    let Ok(user) = Composition::register_user().run(name, email).await
+pub async fn register_user(
+    data: web::Data<Composition>,
+    req: web::Json<RegisterUserRequest>,
+) -> Result<impl Responder> {
+    let Ok(response) = RegisterUserExecute::new(data.register_user()).run(req.0).await
         else {return Err(ErrorInternalServerError("InternalError"))};
-    Ok(web::Json(RegisterUserResponse::from(user)))
+    Ok(web::Json(response))
 }
