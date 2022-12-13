@@ -1,5 +1,5 @@
-use crate::domain::TweetRepository;
 use crate::domain::tweet::Tweets;
+use crate::domain::TweetRepository;
 
 use anyhow::{anyhow, Result};
 

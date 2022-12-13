@@ -3,7 +3,7 @@ use crate::usecase::get_all_tweets::GetAllTweetsHandler;
 use crate::usecase::post_tweet::PostTweetHandler;
 use crate::usecase::register_user::RegisterUserHandler;
 use crate::usecase::search_user::SearchUserHandle;
-use crate::usecase::{PostTweetUsecase, SearchUserUsecase, GetAllTweetsUsecase};
+use crate::usecase::{GetAllTweetsUsecase, PostTweetUsecase, SearchUserUsecase};
 use crate::{infra::tweet::TweetDB, usecase::RegisterUserUsecase};
 
 /// 依存性注入
@@ -15,10 +15,7 @@ impl Composition {
     }
 
     pub fn post_tweet(&self) -> Box<impl PostTweetUsecase> {
-        Box::new(PostTweetHandler::new(
-            Box::new(TweetDB),
-            Box::new(UserDB),
-        ))
+        Box::new(PostTweetHandler::new(Box::new(TweetDB), Box::new(UserDB)))
     }
 
     pub fn search_user(&self) -> Box<impl SearchUserUsecase> {

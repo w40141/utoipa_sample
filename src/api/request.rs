@@ -24,7 +24,7 @@ impl RegisterUserRequest {
         &self.name
     }
 
-    pub fn email(&self) -> &str{
+    pub fn email(&self) -> &str {
         &self.email
     }
 }
@@ -40,7 +40,7 @@ impl PostTweetRequest {
         &self.name
     }
 
-    pub fn content(&self) -> &str{
+    pub fn content(&self) -> &str {
         &self.content
     }
 }
