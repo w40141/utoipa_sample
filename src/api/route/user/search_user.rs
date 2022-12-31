@@ -2,7 +2,7 @@ use actix_web::error::ErrorNotFound;
 use actix_web::{get, web, Responder, Result};
 
 use crate::api::composition::Composition;
-use crate::api::execute::SearchUserEcecute;
+use crate::api::execute::SearchUserExecute;
 use crate::api::request::Name;
 
 #[utoipa::path(
@@ -19,7 +19,7 @@ pub async fn search_user(
     data: web::Data<Composition>,
     req: web::Path<Name>,
 ) -> Result<impl Responder> {
-    let Ok(user) = SearchUserEcecute::run(data.search_user(), req.name()).await
+    let Ok(user) = SearchUserExecute::run(data.search_user(), req.name()).await
         else { return Err(ErrorNotFound("NotFound"))};
     Ok(web::Json(user))
 }

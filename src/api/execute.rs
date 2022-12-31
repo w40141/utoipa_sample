@@ -33,9 +33,9 @@ impl PostTweetExecute {
     }
 }
 
-pub struct SearchUserEcecute;
+pub struct SearchUserExecute;
 
-impl SearchUserEcecute {
+impl SearchUserExecute {
     pub async fn run(
         usecase: Box<dyn SearchUserUsecase>,
         req: &str,
